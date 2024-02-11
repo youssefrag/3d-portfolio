@@ -1,19 +1,26 @@
-import App from "../App";
+ import * as THREE from 'three'
+ import App from '../App.js'
 
-export default class Loop {
-  constructor() {
-    this.app = new App();
-    this.camera = this.app.camera;
-    this.renderer = this.app.renderer;
-    this.world = this.app.world;
+ export default class Loop {
+    constructor() {
+        this.app = new App()
+        this.camera = this.app.camera
+        this.renderer = this.app.renderer
+        this.world = this.app.world
 
-    this.loop();
-  }
+        this.clock = new THREE.Clock()
+        this.previousElapsedTime = 0
+        this.loop()
+    }
 
-  loop() {
-    this.world.loop();
-    this.camera.loop();
-    this.renderer.loop();
-    window.requestAnimationFrame(() => this.loop());
-  }
+    loop() {
+        const elapsedTime = this.clock.getElapsedTime()
+        const deltaTime = elapsedTime - this.previousElapsedTime
+        this.previousElapsedTime = elapsedTime
+
+        this.world.loop(deltaTime, elapsedTime)
+        this.camera.loop()
+        this.renderer.loop()
+        window.requestAnimationFrame(() => this.loop())
+    }
 }

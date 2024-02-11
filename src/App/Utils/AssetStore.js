@@ -1,8 +1,6 @@
 import { createStore } from "zustand/vanilla";
 
-const assetsToLoad = [
-  { path: "/textures/desert.jpg", id: "desert", type: "texture" },
-];
+const assetsToLoad = [];
 
 const assetStore = createStore((set) => ({
   assetsToLoad,
