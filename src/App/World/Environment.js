@@ -108,16 +108,59 @@ export default class Environment {
 
   addSigns() {
     // console.log(this.assetStore.loadedAssets.resume.scene);
+    const textMaterial = new THREE.MeshPhongMaterial({ color: "#ffffff" });
+
     const resumeScene = this.assetStore.loadedAssets.resume.scene;
     resumeScene.scale.setScalar(10);
-    console.log(resumeScene.children[1]);
-    const text = resumeScene.children[1];
-    text.material = new THREE.MeshPhongMaterial({ color: "#ffffff" });
+    const resumeText = resumeScene.children[1];
+    resumeText.material = textMaterial;
     resumeScene.position.x = -68;
     resumeScene.position.y = 32;
     resumeScene.position.z = -96;
     resumeScene.children[1];
     this.scene.add(resumeScene);
+    for (const child of resumeScene.children) {
+      child.traverse((obj) => {
+        if (obj.isMesh) {
+          this.physics.add(obj, "fixed", "trimesh");
+        }
+      });
+    }
+
+    const projectsScene = this.assetStore.loadedAssets.projects.scene;
+    projectsScene.scale.setScalar(10);
+
+    const projectsText = projectsScene.children[1];
+    projectsText.material = textMaterial;
+    projectsScene.position.x = 17;
+    projectsScene.position.y = 32;
+    projectsScene.position.z = -96;
+    this.scene.add(projectsScene);
+
+    for (const child of projectsScene.children) {
+      child.traverse((obj) => {
+        if (obj.isMesh) {
+          this.physics.add(obj, "fixed", "trimesh");
+        }
+      });
+    }
+
+    const skillsScene = this.assetStore.loadedAssets.skills.scene;
+    skillsScene.scale.setScalar(9);
+    const skillsText = skillsScene.children[1];
+    skillsText.material = textMaterial;
+    skillsScene.position.x = 111;
+    skillsScene.position.y = 62;
+    skillsScene.position.z = -96;
+    this.scene.add(skillsScene);
+
+    for (const child of skillsScene.children) {
+      child.traverse((obj) => {
+        if (obj.isMesh) {
+          this.physics.add(obj, "fixed", "trimesh");
+        }
+      });
+    }
   }
 
   addLights() {

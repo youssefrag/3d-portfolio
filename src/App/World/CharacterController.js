@@ -103,5 +103,6 @@ export default class CharacterController {
     // Set next kinematic translation of rigid body and update character position
     this.rigidBody.setNextKinematicTranslation(newPosition);
     this.character.position.lerp(this.rigidBody.translation(), 0.1);
+    console.log(this.character.position);
   }
 }
