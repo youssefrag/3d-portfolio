@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import assetStore from "../Utils/AssetStore.js";
 
 import App from "../App.js";
 
@@ -7,12 +8,14 @@ export default class Environment {
     this.app = new App();
     this.scene = this.app.scene;
     this.physics = this.app.world.physics;
+    this.assetStore = assetStore.getState();
 
     this.loadEnvironment();
     this.addGround();
     // this.addWalls();
-    this.addStairs();
-    this.addMeshes();
+    this.addHouses();
+    // this.addStairs();
+    // this.addMeshes();
   }
 
   loadEnvironment() {
@@ -23,10 +26,11 @@ export default class Environment {
     this.directionalLight.position.set(1, 1, 1);
     this.directionalLight.castShadow = true;
     this.scene.add(this.directionalLight);
+    this.assetStore = assetStore.getState();
   }
 
   addGround() {
-    const groundGeometry = new THREE.BoxGeometry(100, 1, 100);
+    const groundGeometry = new THREE.BoxGeometry(1000, 1, 1000);
     const groundMaterial = new THREE.MeshStandardMaterial({
       color: "turquoise",
     });
@@ -61,6 +65,17 @@ export default class Environment {
       this.scene.add(wallMesh);
       this.physics.add(wallMesh, "fixed", "cuboid");
     });
+  }
+
+  addHouses() {
+    this.assetStore = assetStore.getState();
+    const houseMesh = this.assetStore.loadedAssets.houses.scene;
+    houseMesh.scale.setScalar(0.1);
+    houseMesh.position.z = -150;
+    houseMesh.position.y = 10;
+    houseMesh.rotation.y = 0.5 * Math.PI;
+    this.scene.add(houseMesh);
+    this.physics.add(houseMesh, "fixed", "cuboid");
   }
 
   addStairs() {
