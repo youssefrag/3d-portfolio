@@ -12,9 +12,10 @@ export default class Environment {
 
     this.loadEnvironment();
     this.addGround();
-    // this.addWalls();
+    this.addWalls();
     this.addHouses();
     this.addLights();
+    this.addSigns();
   }
 
   loadEnvironment() {
@@ -41,15 +42,21 @@ export default class Environment {
   addWalls() {
     const wallMaterial = new THREE.MeshStandardMaterial({
       color: "lightgreen",
+      visible: false,
     });
 
-    const wallGeometry = new THREE.BoxGeometry(100, 10, 1);
+    const wallGeometry = new THREE.BoxGeometry(350, 100, 1);
 
     const wallPositions = [
-      { x: 0, y: 5, z: 50 },
-      { x: 0, y: 5, z: -50 },
-      { x: 50, y: 5, z: 0, rotation: { y: Math.PI / 2 } },
-      { x: -50, y: 5, z: 0, rotation: { y: Math.PI / 2 } },
+      { x: 0, y: 5, z: 110 },
+      { x: 0, y: 5, z: -110 },
+      {
+        x: 160,
+        y: 5,
+        z: 0,
+        rotation: { y: Math.PI / 2 },
+      },
+      { x: -160, y: 5, z: 0, rotation: { y: Math.PI / 2 } },
     ];
 
     wallPositions.forEach((position) => {
@@ -67,7 +74,6 @@ export default class Environment {
   }
 
   addHouses() {
-    this.assetStore = assetStore.getState();
     const housesScene = this.assetStore.loadedAssets.houses.scene;
     housesScene.scale.setScalar(0.1);
     housesScene.position.z = -100;
@@ -85,7 +91,7 @@ export default class Environment {
 
     const ladderScene = this.assetStore.loadedAssets.ladder.scene;
     ladderScene.rotation.x = Math.PI * -0.96;
-    ladderScene.scale.setScalar(0.1);
+    ladderScene.scale.setScalar(0.11);
     ladderScene.position.x = -60;
     ladderScene.position.y = 0;
     ladderScene.position.z = -75;
@@ -93,12 +99,25 @@ export default class Environment {
 
     for (const child of ladderScene.children) {
       child.traverse((obj) => {
-        console.log(obj);
         if (obj.isMesh) {
           this.physics.add(obj, "fixed", "trimesh");
         }
       });
     }
+  }
+
+  addSigns() {
+    // console.log(this.assetStore.loadedAssets.resume.scene);
+    const resumeScene = this.assetStore.loadedAssets.resume.scene;
+    resumeScene.scale.setScalar(10);
+    console.log(resumeScene.children[1]);
+    const text = resumeScene.children[1];
+    text.material = new THREE.MeshPhongMaterial({ color: "#ffffff" });
+    resumeScene.position.x = -68;
+    resumeScene.position.y = 32;
+    resumeScene.position.z = -96;
+    resumeScene.children[1];
+    this.scene.add(resumeScene);
   }
 
   addLights() {

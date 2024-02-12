@@ -57,7 +57,7 @@ export default class CharacterController {
     this.characterController =
       this.physics.world.createCharacterController(0.01);
     this.characterController.setApplyImpulsesToDynamicBodies(true);
-    this.characterController.enableAutostep(5, 0.1, false);
+    this.characterController.enableAutostep(10, 0.1, false);
     this.characterController.enableSnapToGround(1);
   }
 
@@ -91,7 +91,7 @@ export default class CharacterController {
     }
 
     // Normalize and scale movement vector and set y component to -1
-    movement.normalize().multiplyScalar(0.3);
+    movement.normalize().multiplyScalar(0.5);
     movement.y = -1;
 
     // Update collider movement and get new position of rigid body
