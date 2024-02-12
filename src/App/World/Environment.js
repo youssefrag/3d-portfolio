@@ -14,8 +14,7 @@ export default class Environment {
     this.addGround();
     // this.addWalls();
     this.addHouses();
-    // this.addStairs();
-    // this.addMeshes();
+    this.addLights();
   }
 
   loadEnvironment() {
@@ -69,59 +68,35 @@ export default class Environment {
 
   addHouses() {
     this.assetStore = assetStore.getState();
-    const houseMesh = this.assetStore.loadedAssets.houses.scene;
-    houseMesh.scale.setScalar(0.1);
-    houseMesh.position.z = -150;
-    houseMesh.position.y = 10;
-    houseMesh.rotation.y = 0.5 * Math.PI;
-    this.scene.add(houseMesh);
-    this.physics.add(houseMesh, "fixed", "cuboid");
-  }
+    const housesScene = this.assetStore.loadedAssets.houses.scene;
+    housesScene.scale.setScalar(0.1);
+    housesScene.position.z = -100;
+    housesScene.position.y = 10;
+    housesScene.rotation.y = 0.5 * Math.PI;
+    this.scene.add(housesScene);
 
-  addStairs() {
-    const stairMaterial = new THREE.MeshStandardMaterial({
-      color: "orange",
-    });
-
-    const stairGeometry = new THREE.BoxGeometry(10, 1, 100);
-
-    const stairPositions = [
-      { x: 5, y: 1, z: 0 },
-      { x: 15, y: 2, z: 0 },
-      { x: 25, y: 3, z: 0 },
-      { x: 35, y: 4, z: 0 },
-      { x: 45, y: 5, z: 0 },
-    ];
-
-    stairPositions.forEach((position) => {
-      const stairMesh = new THREE.Mesh(stairGeometry, stairMaterial);
-      stairMesh.position.set(position.x, position.y, position.z);
-      this.scene.add(stairMesh);
-      this.physics.add(stairMesh, "fixed", "cuboid");
-    });
-  }
-
-  addMeshes() {
-    const geometry = new THREE.SphereGeometry(1, 32, 32);
-    const material = new THREE.MeshStandardMaterial({
-      color: "blue",
-    });
-
-    for (let i = 0; i < 100; i++) {
-      const mesh = new THREE.Mesh(geometry, material);
-      mesh.position.set(
-        (Math.random() - 0.5) * 10,
-        (Math.random() + 5) * 10,
-        (Math.random() - 0.5) * 10
-      );
-      mesh.scale.setScalar(Math.random() + 0.5);
-      mesh.rotation.set(
-        Math.random() * Math.PI,
-        Math.random() * Math.PI,
-        Math.random() * Math.PI
-      );
-      this.scene.add(mesh);
-      this.physics.add(mesh, "dynamic", "ball");
+    for (const child of housesScene.children) {
+      child.traverse((obj) => {
+        if (obj.isMesh) {
+          this.physics.add(obj, "fixed", "trimesh");
+        }
+      });
     }
+  }
+
+  addLights() {
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    this.scene.add(ambientLight);
+
+    this.directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    this.directionalLight.position.set(1, 1, 1);
+    this.directionalLight.castShadow = true;
+    this.directionalLight.shadow.camera.top = 30;
+    this.directionalLight.shadow.camera.right = 30;
+    this.directionalLight.shadow.camera.left = -30;
+    this.directionalLight.shadow.camera.bottom = -30;
+    this.directionalLight.shadow.bias = -0.002;
+    this.directionalLight.shadow.normalBias = 0.072;
+    this.scene.add(this.directionalLight);
   }
 }
