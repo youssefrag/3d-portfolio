@@ -82,6 +82,23 @@ export default class Environment {
         }
       });
     }
+
+    const ladderScene = this.assetStore.loadedAssets.ladder.scene;
+    ladderScene.rotation.x = Math.PI * -0.96;
+    ladderScene.scale.setScalar(0.1);
+    ladderScene.position.x = -60;
+    ladderScene.position.y = 0;
+    ladderScene.position.z = -75;
+    this.scene.add(ladderScene);
+
+    for (const child of ladderScene.children) {
+      child.traverse((obj) => {
+        console.log(obj);
+        if (obj.isMesh) {
+          this.physics.add(obj, "fixed", "trimesh");
+        }
+      });
+    }
   }
 
   addLights() {
