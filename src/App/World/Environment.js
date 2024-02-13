@@ -10,12 +10,29 @@ export default class Environment {
     this.physics = this.app.world.physics;
     this.assetStore = assetStore.getState();
 
+    this.addBackground();
     this.loadEnvironment();
     this.addGround();
     this.addWalls();
     this.addHouses();
     this.addLights();
     this.addSigns();
+  }
+
+  addBackground() {
+    const cubeTextureLoader = new THREE.CubeTextureLoader();
+    cubeTextureLoader.setPath("/textures/cubeMap/");
+
+    const backgroundCubemap = cubeTextureLoader.load([
+      "px.png",
+      "nx.png",
+      "py.png",
+      "ny.png",
+      "pz.png",
+      "nz.png",
+    ]);
+
+    this.scene.background = backgroundCubemap;
   }
 
   loadEnvironment() {
