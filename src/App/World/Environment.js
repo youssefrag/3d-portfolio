@@ -30,47 +30,54 @@ export default class Environment {
   }
 
   addGround() {
-    const groundGeometry = new THREE.BoxGeometry(1000, 1, 1000);
-    const groundMaterial = new THREE.MeshStandardMaterial({
-      color: "turquoise",
-    });
+    const groundGeometry = new THREE.BoxGeometry(380, 1, 230);
+
+    const sandTexture = this.assetStore.loadedAssets.sand;
+    const groundMaterial = new THREE.MeshStandardMaterial();
+    groundMaterial.map = sandTexture;
     this.groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
+    this.groundMesh.position.z = -100;
     this.scene.add(this.groundMesh);
     this.physics.add(this.groundMesh, "fixed", "cuboid");
   }
 
   addWalls() {
-    const wallMaterial = new THREE.MeshStandardMaterial({
+    const wallMaterial = new THREE.MeshBasicMaterial({
       color: "lightgreen",
       visible: false,
     });
 
-    const wallGeometry = new THREE.BoxGeometry(350, 100, 1);
+    const backFrontWallGeometry = new THREE.BoxGeometry(400, 300, 1);
 
-    const wallPositions = [
-      { x: 0, y: 5, z: 110 },
-      { x: 0, y: 5, z: -110 },
-      {
-        x: 160,
-        y: 5,
-        z: 0,
-        rotation: { y: Math.PI / 2 },
-      },
-      { x: -160, y: 5, z: 0, rotation: { y: Math.PI / 2 } },
-    ];
+    const backWallMesh = new THREE.Mesh(backFrontWallGeometry, wallMaterial);
+    backWallMesh.position.y = 150;
+    backWallMesh.position.z = 15;
 
-    wallPositions.forEach((position) => {
-      const wallMesh = new THREE.Mesh(wallGeometry, wallMaterial);
-      wallMesh.position.set(position.x, position.y, position.z);
-      if (position.rotation)
-        wallMesh.rotation.set(
-          position.rotation.x || 0,
-          position.rotation.y || 0,
-          position.rotation.z || 0
-        );
-      this.scene.add(wallMesh);
-      this.physics.add(wallMesh, "fixed", "cuboid");
-    });
+    this.scene.add(backWallMesh);
+    this.physics.add(backWallMesh, "fixed", "cuboid");
+
+    const leftRightWallGeometry = new THREE.BoxGeometry(1, 300, 230);
+
+    const leftWallMesh = new THREE.Mesh(leftRightWallGeometry, wallMaterial);
+    leftWallMesh.position.x = -150;
+    leftWallMesh.position.y = 150;
+    leftWallMesh.position.z = -30;
+
+    this.scene.add(leftWallMesh);
+    this.physics.add(leftWallMesh, "fixed", "cuboid");
+
+    const rightWallMesh = new THREE.Mesh(leftRightWallGeometry, wallMaterial);
+    rightWallMesh.position.x = 150;
+    rightWallMesh.position.y = 150;
+    rightWallMesh.position.z = -30;
+    this.scene.add(rightWallMesh);
+    this.physics.add(rightWallMesh, "fixed", "cuboid");
+
+    const frontWallMesh = new THREE.Mesh(backFrontWallGeometry, wallMaterial);
+    frontWallMesh.position.y = 150;
+    frontWallMesh.position.z = -110;
+    this.scene.add(frontWallMesh);
+    this.physics.add(frontWallMesh, "fixed", "cuboid");
   }
 
   addHouses() {

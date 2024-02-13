@@ -7,6 +7,7 @@ const assetsToLoad = [
   { id: "resume", path: "/models/resume.glb", type: "model" },
   { id: "projects", path: "/models/projects.glb", type: "model" },
   { id: "skills", path: "/models/skills.glb", type: "model" },
+  { id: "sand", path: "/textures/sand.png", type: "texture" },
 ];
 
 const assetStore = createStore((set) => ({
