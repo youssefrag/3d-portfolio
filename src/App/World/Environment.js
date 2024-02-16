@@ -173,17 +173,17 @@ export default class Environment {
       });
     }
 
-    const contactScene = this.assetStore.loadedAssets.contact.scene;
-    contactScene.scale.setScalar(9);
-    const contactText = contactScene.children[1];
-    contactText.material = textMaterial;
-    contactScene.position.x = 111;
-    contactScene.position.y = 62;
-    contactScene.position.z = -96;
-    contactScene.name = "contact";
-    this.scene.add(contactScene);
+    const skillsScene = this.assetStore.loadedAssets.skills.scene;
+    skillsScene.scale.setScalar(9);
+    const skillsText = skillsScene.children[1];
+    skillsText.material = textMaterial;
+    skillsScene.position.x = 111;
+    skillsScene.position.y = 62;
+    skillsScene.position.z = -96;
+    skillsScene.name = "skills";
+    this.scene.add(skillsScene);
 
-    for (const child of contactScene.children) {
+    for (const child of skillsScene.children) {
       child.traverse((obj) => {
         if (obj.isMesh) {
           this.physics.add(obj, "fixed", "trimesh");
@@ -211,7 +211,7 @@ export default class Environment {
   addPortals() {
     const resumeMesh = this.scene.getObjectByName("resume");
     const projectsMesh = this.scene.getObjectByName("projects");
-    const contactMesh = this.scene.getObjectByName("contact");
+    const skillsMesh = this.scene.getObjectByName("skills");
 
     const modalContentProvider = new ModalContentProvider();
 
@@ -224,8 +224,8 @@ export default class Environment {
       modalContentProvider.getModalInfo("projects")
     );
     this.portal3 = new Portal(
-      contactMesh,
-      modalContentProvider.getModalInfo("contact")
+      skillsMesh,
+      modalContentProvider.getModalInfo("skills")
     );
   }
 

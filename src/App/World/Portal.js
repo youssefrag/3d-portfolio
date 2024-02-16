@@ -15,6 +15,7 @@ export default class Portal {
     this.inputStore = inputStore;
 
     this.prevIsNear = false;
+    this.lastOpened = "";
   }
 
   loop() {
@@ -24,6 +25,7 @@ export default class Portal {
       this.portalMesh.getWorldPosition(portalPosition);
       const distance = this.character.position.distanceTo(portalPosition);
       const isNear = distance < 10;
+
       if (isNear && this.portalMesh.name === "resume") {
         if (!this.prevIsNear) {
           this.inputStore.setState({
@@ -35,26 +37,25 @@ export default class Portal {
           this.modalManager.openResume();
           this.prevIsNear = true;
         }
+      } else if (isNear && this.portalMesh.name === "projects") {
+        if (!this.prevIsNear) {
+          this.lastOpened = "projects";
+          this.modalManager.openProjectsModal();
+        }
+        this.prevIsNear = true;
+      } else if (isNear && this.portalMesh.name === "skills") {
+        if (!this.prevIsNear) {
+          this.lastOpened = "skills";
+          this.modalManager.openSkillsModal();
+        }
+        this.prevIsNear = true;
       } else {
         if (this.prevIsNear) {
+          this.modalManager.closeModal(this.lastOpened);
           this.prevIsNear = false;
         }
+        this.prevIsNear = false;
       }
-
-      // if (isNear) {
-      //   if (!this.prevIsNear) {
-      //     this.modalManager.openModal(
-      //       this.modalInfo.title,
-      //       this.modalInfo.description
-      //     );
-      //   }
-      //   this.prevIsNear = true;
-      // } else {
-      //   if (this.prevIsNear) {
-      //     this.modalManager.closeModal();
-      //     this.prevIsNear = false;
-      //   }
-      // }
     }
   }
 }
