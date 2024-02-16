@@ -209,22 +209,22 @@ export default class Environment {
   }
 
   addPortals() {
-    const portalMesh1 = this.scene.getObjectByName("resume");
-    const portalMesh2 = this.scene.getObjectByName("projects");
-    const portalMesh3 = this.scene.getObjectByName("contact");
+    const resumeMesh = this.scene.getObjectByName("resume");
+    const projectsMesh = this.scene.getObjectByName("projects");
+    const contactMesh = this.scene.getObjectByName("contact");
 
     const modalContentProvider = new ModalContentProvider();
 
     this.portal1 = new Portal(
-      portalMesh1,
+      resumeMesh,
       modalContentProvider.getModalInfo("resume")
     );
     this.portal2 = new Portal(
-      portalMesh2,
+      projectsMesh,
       modalContentProvider.getModalInfo("projects")
     );
     this.portal3 = new Portal(
-      portalMesh3,
+      contactMesh,
       modalContentProvider.getModalInfo("contact")
     );
   }
