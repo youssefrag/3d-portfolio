@@ -2,6 +2,8 @@ import * as THREE from "three";
 import assetStore from "../Utils/AssetStore.js";
 
 import App from "../App.js";
+import Portal from "./Portal.js";
+import ModalContentProvider from "../UI/ModalContentProvider.js";
 
 export default class Environment {
   constructor() {
@@ -17,6 +19,7 @@ export default class Environment {
     this.addHouses();
     this.addLights();
     this.addSigns();
+    this.addPortals();
   }
 
   addBackground() {
@@ -131,7 +134,6 @@ export default class Environment {
   }
 
   addSigns() {
-    // console.log(this.assetStore.loadedAssets.resume.scene);
     const textMaterial = new THREE.MeshPhongMaterial({ color: "#ffffff" });
 
     const resumeScene = this.assetStore.loadedAssets.resume.scene;
@@ -142,6 +144,7 @@ export default class Environment {
     resumeScene.position.y = 32;
     resumeScene.position.z = -96;
     resumeScene.children[1];
+    resumeScene.name = "resume";
     this.scene.add(resumeScene);
     for (const child of resumeScene.children) {
       child.traverse((obj) => {
@@ -159,6 +162,7 @@ export default class Environment {
     projectsScene.position.x = 17;
     projectsScene.position.y = 32;
     projectsScene.position.z = -96;
+    projectsScene.name = "projects";
     this.scene.add(projectsScene);
 
     for (const child of projectsScene.children) {
@@ -169,16 +173,17 @@ export default class Environment {
       });
     }
 
-    const skillsScene = this.assetStore.loadedAssets.skills.scene;
-    skillsScene.scale.setScalar(9);
-    const skillsText = skillsScene.children[1];
-    skillsText.material = textMaterial;
-    skillsScene.position.x = 111;
-    skillsScene.position.y = 62;
-    skillsScene.position.z = -96;
-    this.scene.add(skillsScene);
+    const contactScene = this.assetStore.loadedAssets.contact.scene;
+    contactScene.scale.setScalar(9);
+    const contactText = contactScene.children[1];
+    contactText.material = textMaterial;
+    contactScene.position.x = 111;
+    contactScene.position.y = 62;
+    contactScene.position.z = -96;
+    contactScene.name = "contact";
+    this.scene.add(contactScene);
 
-    for (const child of skillsScene.children) {
+    for (const child of contactScene.children) {
       child.traverse((obj) => {
         if (obj.isMesh) {
           this.physics.add(obj, "fixed", "trimesh");
@@ -201,5 +206,32 @@ export default class Environment {
     this.directionalLight.shadow.bias = -0.002;
     this.directionalLight.shadow.normalBias = 0.072;
     this.scene.add(this.directionalLight);
+  }
+
+  addPortals() {
+    const portalMesh1 = this.scene.getObjectByName("resume");
+    const portalMesh2 = this.scene.getObjectByName("projects");
+    const portalMesh3 = this.scene.getObjectByName("contact");
+
+    const modalContentProvider = new ModalContentProvider();
+
+    this.portal1 = new Portal(
+      portalMesh1,
+      modalContentProvider.getModalInfo("resume")
+    );
+    this.portal2 = new Portal(
+      portalMesh2,
+      modalContentProvider.getModalInfo("projects")
+    );
+    this.portal3 = new Portal(
+      portalMesh3,
+      modalContentProvider.getModalInfo("contact")
+    );
+  }
+
+  loop() {
+    this.portal1.loop();
+    this.portal2.loop();
+    this.portal3.loop();
   }
 }

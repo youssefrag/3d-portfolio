@@ -6,7 +6,7 @@ const assetsToLoad = [
   { id: "ladder", path: "/models/ladder.glb", type: "model" },
   { id: "resume", path: "/models/resume.glb", type: "model" },
   { id: "projects", path: "/models/projects.glb", type: "model" },
-  { id: "skills", path: "/models/skills.glb", type: "model" },
+  { id: "contact", path: "/models/contact.glb", type: "model" },
   { id: "sand", path: "/textures/sand.png", type: "texture" },
 ];
 
