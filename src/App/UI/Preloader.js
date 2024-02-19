@@ -9,6 +9,8 @@ export default class Preloader {
     this.overlay = document.querySelector(".overlay");
     this.loading = document.querySelector(".loading");
     this.startButton = document.querySelector(".start");
+    this.instructions = document.querySelector(".instructions");
+    this.intro = document.querySelector(".intro");
 
     this.assetStore.subscribe((state) => {
       this.numberOfLoadedAssets = Object.keys(state.loadedAssets).length;
@@ -34,7 +36,8 @@ export default class Preloader {
     this.startButton.addEventListener(
       "click",
       () => {
-        console.log("started");
+        this.instructions.style.display = "block";
+        this.intro.style.display = "none";
         this.overlay.classList.add("fade");
         this.startButton.classList.add("fadeOut");
 

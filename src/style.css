@@ -206,3 +206,34 @@ body {
 a {
   text-decoration: none;
 }
+
+.image-container img {
+  width: auto;
+  height: 100%;
+}
+.image-container {
+  height: 10rem;
+}
+
+#skillsModal .modal-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  row-gap: 4rem;
+}
+
+.instructions {
+  position: absolute;
+  top: 10px;
+  color: #fff;
+  left: 20px;
+  font-size: 2rem;
+  display: none;
+}
+.intro {
+  position: absolute;
+  top: 10px;
+  color: #fff;
+  padding: 10rem 25rem;
+  font-size: 2rem;
+  display: block;
+}
