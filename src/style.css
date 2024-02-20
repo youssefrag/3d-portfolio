@@ -184,7 +184,7 @@ body {
 
 .links-container span {
   display: block;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 500;
   margin-bottom: 1.6rem;
   letter-spacing: 0.75px;
@@ -231,9 +231,22 @@ a {
 }
 .intro {
   position: absolute;
-  top: 10px;
+  top: 5px;
   color: #fff;
-  padding: 10rem 25rem;
-  font-size: 2rem;
+  padding: 6rem 18rem;
+  font-size: 1.5rem;
   display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.intro h2 {
+  text-align: center;
+}
+
+@media only screen and (max-width: 1500px) {
+  .image-container {
+    height: 6rem;
+  }
 }
